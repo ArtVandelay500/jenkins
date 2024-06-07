@@ -20,10 +20,10 @@ pipeline {
             
             steps {
                 echo 'Clonning Repository'
-
+              
                 git url: 'https://github.com/ArtVandelay500/jenkins.git',
                     branch: 'master',
-                    credentialsId: 'jenkinsgit'
+                    credentialsId: 'jenkins_token'
             }
 
             post {
@@ -50,7 +50,7 @@ pipeline {
             // 프론트엔드 디렉토리의 정적파일들을 S3 에 올림, 이 전에 반드시 EC2 instance profile 을 등록해야함.
             dir ('./website'){
                 sh '''
-                aws s3 sync ./ s3://namhoontest
+                aws s3 sync ./ s3://vandelaybucket
                 '''
             }
           }
@@ -61,7 +61,7 @@ pipeline {
               success {
                   echo 'Successfully Cloned Repository'
 
-                  mail  to: 'frontalnh@gmail.com',
+                  mail  to: 'youngblood0311@gmail.com',
                         subject: "Deploy Frontend Success",
                         body: "Successfully deployed frontend!"
 
@@ -70,7 +70,7 @@ pipeline {
               failure {
                   echo 'I failed :('
 
-                  mail  to: 'frontalnh@gmail.com',
+                  mail  to: 'youngblood0311@gmail.com',
                         subject: "Failed Pipelinee",
                         body: "Something is wrong with deploy frontend"
               }
@@ -140,7 +140,7 @@ pipeline {
 
             dir ('./server'){
                 sh '''
-                docker rm -f $(docker ps -aq)
+                // docker rm -f $(docker ps -aq)
                 docker run -p 80:80 -d server
                 '''
             }
@@ -148,7 +148,7 @@ pipeline {
 
           post {
             success {
-              mail  to: 'frontalnh@gmail.com',
+              mail  to: 'youngblood0311@gmail.com',
                     subject: "Deploy Success",
                     body: "Successfully deployed!"
                   
