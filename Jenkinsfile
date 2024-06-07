@@ -20,9 +20,9 @@ pipeline {
             
             steps {
                 echo 'Clonning Repository'
-              
+
                 git url: 'https://github.com/ArtVandelay500/jenkins.git',
-                    branch: 'master',
+                    branch: 'main',
                     credentialsId: 'jenkins_token'
             }
 
